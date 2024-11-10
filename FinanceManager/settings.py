@@ -71,6 +71,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "FinanceManager.wsgi.application"
 
 
+
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -106,7 +107,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+
+TIME_ZONE = 'Asia/Bangkok' 
+USE_TZ = True  
+
 
 USE_I18N = True
 
