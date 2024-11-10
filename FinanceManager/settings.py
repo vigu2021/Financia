@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "users",
+    "finances",
 ]
 
 MIDDLEWARE = [
@@ -70,8 +71,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "FinanceManager.wsgi.application"
 
-
-
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = 'finance_home'
+LOGOUT_REDIRECT_URL = 'home'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -127,4 +129,3 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = '/'
