@@ -6,11 +6,12 @@ class Transaction(models.Model):
     amount = models.FloatField(default = 0)
     trans_type = models.CharField(max_length=50)
     is_gain = models.BooleanField()
+    date = models.DateField()
 
     class Meta:
         db_table = 'transactions'
 
     def __str__(self):
-        return f"{self.user} - {"+" if self.is_gain else "-"}{self.amount} - {self.trans_type}"
-
+        return f"{self.user} - {"+" if self.is_gain else "-"}{self.amount} - {self.trans_type} - {self.date}"
+    
 
