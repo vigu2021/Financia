@@ -13,11 +13,31 @@
 
     <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" name="password" required>
+        <div class="input-group">
+            <input type="password" class="form-control" id="password" name="password" required>
+            <div class="input-group-append">
+                <button type="button" class="btn btn-secondary" onclick="togglePasswordVisibility('password')">Show</button>
+            </div>
+        </div>
     </div>
 
     <button type="submit" class="btn-primary">Login</button>
 </form>
 
 <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+
+<script>
+    function togglePasswordVisibility(fieldId) {
+        const passwordField = document.getElementById(fieldId);
+        const button = passwordField.nextElementSibling.querySelector("button");
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            button.textContent = "Hide";
+        } else {
+            passwordField.type = "password";
+            button.textContent = "Show";
+        }
+    }
+</script>
+
 {% endblock %}
