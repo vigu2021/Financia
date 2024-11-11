@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Transaction(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='transaction')
     amount = models.FloatField(default = 0)
     trans_type = models.CharField(max_length=50)
     is_gain = models.BooleanField()
-    date = models.DateField()
+    date_time = models.DateTimeField(default=timezone.now)
 
     class Meta:
         db_table = 'transactions'

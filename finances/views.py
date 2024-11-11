@@ -1,21 +1,27 @@
-
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.utils import timezone
+from django.http import HttpResponse
 from .forms import TransactionForm
-from datetime import datetime
-
-
+from .models import Transaction
 
 @login_required
 def home(request):
     if request.method == 'POST':
         form = TransactionForm(request.POST)
         if form.is_valid():
-            form.instance.user = request.user
-            form.instance.time = datetime.now()
-            form.save()
+            transaction = form.save(commit=False)  
+            transaction.user = request.user
+            transaction.date_time = timezone.now()  
+            transaction.save()
             return HttpResponse('<h1>Success!</h1>')  
     else:
-        form = TransactionForm()  
-    return render(request, 'transaction_form.html', {'form': form})  # Pass the form to the template
+        form = TransactionForm()
+    
+    # Fetch recent transactions
+    recent_transactions = Transaction.objects.filter(user=request.user).order_by('-id')[:5]
+    
+    return render(request, 'transaction_form.html', {
+        'form': form,
+        'recent_transactions': recent_transactions
+    })
