@@ -25,7 +25,7 @@
             <ul class="navbar-nav ml-auto">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'finance_home' %}">Finances</a>
+                        <a class="nav-link text-white" href="{% url 'finance_home' %}">My finances</a>
                     </li>
                     <li class="nav-item">
                         <form action="{% url 'logout' %}" method="post" style="display: inline;">
