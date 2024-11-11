@@ -6,4 +6,3 @@ class TransactionForm(forms.ModelForm):
         model = Transaction
         fields = ['amount', 'trans_type', 'is_gain']
 
-        

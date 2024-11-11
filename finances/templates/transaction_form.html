@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Form</title>
+</head>
+<body>
+    <h1>Transaction Form</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if form.errors %}
+        <div style="color: red;">
+            <h3>Form Errors:</h3>
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <h2>Transaction History</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Transaction Type</th>
+                <th>Is Gain?</th>
+                <th>User</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.trans_type }}</td>
+                    <td>{{ transaction.is_gain }}</td>
+                    <td>{{ transaction.user }}</td>
+                    <td>{{ transaction.date }}</td>  <!-- Adjust this if you have a date field -->
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No transactions found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
