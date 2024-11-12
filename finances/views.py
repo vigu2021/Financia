@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from django.utils import timezone
 from .forms import TransactionForm
 from .models import Transaction
-from .utils import get_total_amount
+from .utils import get_total_amount,get_all_comparisons
 
 @login_required
 def home(request):
@@ -28,9 +28,13 @@ def home(request):
     # Fetch recent transactions
     recent_transactions = Transaction.objects.filter(user=current_user).order_by('-id')[:5]
     total_amount = get_total_amount(current_user)
-    
+    compare_7_days,compare_30_days,compare_365_days = get_all_comparisons(current_user)
+
     return render(request, 'transaction_form.html', {
         'form': form,
         'recent_transactions': recent_transactions,
-        'total_amount':total_amount
+        'total_amount':total_amount,
+        'compare_7_days':compare_7_days,
+        'compare_30_days':compare_30_days,
+        'compare_365_days':compare_365_days
     })

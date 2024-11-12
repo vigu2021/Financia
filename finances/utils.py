@@ -25,7 +25,7 @@ def get_period_comparision(user,days):
     end_of_this_period = current_date_time
 
     start_of_prev_period = start_of_this_period - timedelta(days = days)
-    end_of_prev_period =  end_of_this_period - timedelta(days = 1)
+    end_of_prev_period =  start_of_this_period - timedelta(days = 1)
 
 
     #Get transaction of this period and the sum 
@@ -45,7 +45,7 @@ def get_period_comparision(user,days):
     last_period_sum = find_sum(last_period_transactions)
     
     if last_period_sum == 0:
-        period_comparision = None
+        period_comparision = 0
     else:
         period_comparision = 100* (this_period_sum-last_period_sum)/last_period_sum
 
