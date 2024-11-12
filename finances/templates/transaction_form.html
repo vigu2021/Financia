@@ -9,14 +9,14 @@
         .navbar .logout-btn {
             padding: 8px 15px;
             color: white;
-            cursor: pointer;
+            cursor: pointer; 
         }
         .errorlist li {
             color: red;
         }
         .form-row {
             display: flex;
-            gap: 15px; /
+            gap: 15px; 
             align-items: center;
         }
         .radio-group {
@@ -26,6 +26,7 @@
     </style>
 </head>
 <body>
+    <h1>Total Amount: {{ total_amount }}</h1>
     <nav class="navbar navbar-expand-lg bg-success">
         <a class="navbar-brand text-white" href="{% url 'home' %}">Financia</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,6 +68,11 @@
                         <div>
                             {{ form.amount.label_tag }}
                             {{ form.amount }}
+                            <small class="text-danger" style="min-height: 20px; margin-top: 5px;">
+                                {% if form.amount.errors %}
+                                    {{ form.amount.errors.0 }}
+                                {% endif %}
+                            </small>
                         </div>
                         
                         <!-- Trans Type Field -->
@@ -86,7 +92,7 @@
                         </div>
                     </div>
     
-                    <button type="submit" class="btn btn-success mt-3" style="margin-left: 50px;">Submit Transaction</button>
+                    <button type="submit" class="btn btn-success mt-3" style="margin-left: 480px;">Submit Transaction</button>
                 </form>
             </div>
         </div>
