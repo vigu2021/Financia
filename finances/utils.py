@@ -44,10 +44,7 @@ def get_period_comparision(user,days):
     )
     last_period_sum = find_sum(last_period_transactions)
     
-    if last_period_sum == 0:
-        period_comparision = 0
-    else:
-        period_comparision = 100* (this_period_sum-last_period_sum)/last_period_sum
+    period_comparision  = this_period_sum - last_period_sum
 
     return {
         'this_period_sum' : this_period_sum,

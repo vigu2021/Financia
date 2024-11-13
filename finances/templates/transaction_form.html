@@ -3,45 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Transactions{% endblock %}</title>
+    <title>Transactions</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        .navbar .logout-btn {
-            padding: 8px 15px;
-            color: white;
-            cursor: pointer; 
-        }
         .errorlist li {
             color: red;
         }
         .form-row {
             display: flex;
-            gap: 15px; 
+            gap: 15px;
             align-items: center;
         }
         .radio-group {
             display: flex;
-            gap: 10px; /* Space between Gain and Loss options */
+            gap: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Total Amount: {{ total_amount }}</h1>
     <nav class="navbar navbar-expand-lg bg-success">
-        <a class="navbar-brand text-white" href="{% url 'home' %}">Financia</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <a class="navbar-brand text-white" href="{% url 'finance_home' %}">Financia</a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link text-white" href="{% url 'finance_home' %}">Home</a>
                     </li>
                     <li class="nav-item">
                         <form action="{% url 'logout' %}" method="post" style="display: inline;">
                             {% csrf_token %}
-                            <button type="submit" class="btn logout-btn" style="background: none; border: none;">
+                            <button type="submit" class="btn logout-btn" style="background: none; border: none; color: white;">
                                 Log Out
                             </button>
                         </form>
@@ -52,52 +43,40 @@
     </nav>
 
     <div class="container mt-5">
-        <h1 style="text-align: center;">Transactions</h1>
-    
-        <!-- Transaction Form -->
+        <h1 class="text-center">Total Amount: {{ total_amount }}</h1>
+        <h2 class="text-center mt-4">Comparisons</h2>
+        <ul class="list-unstyled text-center">
+            <li>Last 7 Days: {{ compare_7_days }}</li>
+            <li>Last 30 Days: {{ compare_30_days }}</li>
+            <li>Last 365 Days: {{ compare_365_days }}</li>
+        </ul>
+
         <div class="row mb-4">
             <div class="col-12">
                 <h4>Add a New Transaction:</h4>
-                <form method="post">
+                <form method="post" class="mb-3">
                     {% csrf_token %}
-                    
-                    <!-- Flex Container for Amount, Trans type, and Gain/Loss -->
-                    <div class="form-row align-items-center" style="display: flex; gap: 20px; margin-left: 200px;">
-                        
-                        <!-- Amount Field -->
+                    <div class="form-row align-items-center">
                         <div>
                             {{ form.amount.label_tag }}
                             {{ form.amount }}
-                            <small class="text-danger" style="min-height: 20px; margin-top: 5px;">
-                                {% if form.amount.errors %}
-                                    {{ form.amount.errors.0 }}
-                                {% endif %}
-                            </small>
+                            {% if form.amount.errors %}
+                                <small class="text-danger">{{ form.amount.errors.0 }}</small>
+                            {% endif %}
                         </div>
-                        
-                        <!-- Trans Type Field -->
                         <div>
                             {{ form.trans_type.label_tag }}
                             {{ form.trans_type }}
                         </div>
-    
-                        <!-- Gain/Loss Radio Buttons -->
                         <div class="radio-group">
-                            <label style="margin-right: 10px;">
-                                <input type="radio" name="is_gain" value="True" required> Gain
-                            </label>
-                            <label>
-                                <input type="radio" name="is_gain" value="False" required> Loss
-                            </label>
+                            <label><input type="radio" name="is_gain" value="True" required> Gain</label>
+                            <label><input type="radio" name="is_gain" value="False" required> Loss</label>
                         </div>
                     </div>
-    
-                    <button type="submit" class="btn btn-success mt-3" style="margin-left: 480px;">Submit Transaction</button>
+                    <button type="submit" class="btn btn-success mt-3">Submit Transaction</button>
                 </form>
             </div>
         </div>
-    </div>
-    
 
         {% if recent_transactions %}
         <div class="card">
@@ -110,6 +89,7 @@
                         <th>Date</th>
                         <th>Category</th>
                         <th>Gain/Loss</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -121,10 +101,18 @@
                                 {% if transaction.is_gain %}+{% else %}-{% endif %}
                                 {{ transaction.amount }}
                             </td>
+                            <td>
+                                <!-- Delete button -->
+                                <a href="{% url 'delete_transaction' transaction.id %}" 
+                                   class="btn btn-danger btn-sm delete-btn"
+                                   onclick="return confirm('Are you sure you want to delete this transaction?');">
+                                   Delete
+                                </a>
+                            </td>
                         </tr>
                     {% empty %}
                         <tr>
-                            <td colspan="3">No recent transactions available.</td>
+                            <td colspan="4">No recent transactions available.</td>
                         </tr>
                     {% endfor %}
                 </tbody>
