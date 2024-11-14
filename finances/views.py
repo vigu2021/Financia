@@ -50,3 +50,10 @@ def delete_transaction(request,transaction_id):
     transaction = get_object_or_404(Transaction,id=transaction_id, user=request.user)
     transaction.delete()
     return redirect('finance_home')
+
+@login_required
+def view_all_transactions(request):
+    table = Transaction.objects.filter(user=request.user).order_by('-date_time')
+    return render(request, 'transaction_list.html', {
+        'transactions': table,
+    })

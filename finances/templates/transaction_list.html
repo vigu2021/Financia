@@ -3,20 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transactions</title>
+    <title>All Transactions</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .errorlist li {
             color: red;
-        }
-        .form-row {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-        .radio-group {
-            display: flex;
-            gap: 10px;
         }
     </style>
 </head>
@@ -42,48 +33,13 @@
         </div>
     </nav>
 
- 
-
     <div class="container mt-5">
-        <h1 class="text-center">Total Amount: {{ total_amount }}</h1>
-        <h2 class="text-center mt-4">Comparisons</h2>
-        <ul class="list-unstyled text-center">
-            <li>Last 7 Days: {{ compare_7_days }}</li>
-            <li>Last 30 Days: {{ compare_30_days }}</li>
-            <li>Last 365 Days: {{ compare_365_days }}</li>
-        </ul>
+        <h1 class="text-center">All Transactions</h1>
+        <p class="text-center">Total Amount: {{ total_amount }}</p>
 
-        <div class="row mb-4">
-            <div class="col-12">
-                <h4>Add a New Transaction:</h4>
-                <form method="post" class="mb-3">
-                    {% csrf_token %}
-                    <div class="form-row align-items-center">
-                        <div>
-                            {{ form.amount.label_tag }}
-                            {{ form.amount }}
-                            {% if form.amount.errors %}
-                                <small class="text-danger">{{ form.amount.errors.0 }}</small>
-                            {% endif %}
-                        </div>
-                        <div>
-                            {{ form.trans_type.label_tag }}
-                            {{ form.trans_type }}
-                        </div>
-                        <div class="radio-group">
-                            <label><input type="radio" name="is_gain" value="True" required> Gain</label>
-                            <label><input type="radio" name="is_gain" value="False" required> Loss</label>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-success mt-3">Submit Transaction</button>
-                </form>
-            </div>
-        </div>
-
-        {% if recent_transactions %}
-        <div class="card">
+        <div class="card mt-4">
             <div class="card-header text-success">
-                <h3 class="mb-0">Recent Transactions</h3>
+                <h3 class="mb-0">Transactions List</h3>
             </div>
             <table class="table">
                 <thead class="thead-light">
@@ -91,18 +47,19 @@
                         <th>Date</th>
                         <th>Category</th>
                         <th>Gain/Loss</th>
+                        <th>Amount</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for transaction in recent_transactions %}
+                    {% for transaction in transactions %}
                         <tr>
                             <td>{{ transaction.date_time|date:"M d, Y H:i" }}</td>
                             <td>{{ transaction.trans_type }}</td>
                             <td>
-                                {% if transaction.is_gain %}+{% else %}-{% endif %}
-                                {{ transaction.amount }}
+                                {% if transaction.is_gain %}Gain{% else %}Loss{% endif %}
                             </td>
+                            <td>{{ transaction.amount }}</td>
                             <td>
                                 <!-- Delete button -->
                                 <a href="{% url 'delete_transaction' transaction.id %}" 
@@ -114,18 +71,14 @@
                         </tr>
                     {% empty %}
                         <tr>
-                            <td colspan="4">No recent transactions available.</td>
+                            <td colspan="5" class="text-center">No transactions available.</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-        {% endif %}
-    </div>
-    <div class="container mt-3">
-        <div class="text-right">
-            <a href="{% url 'view_all_transactions' %}" class="btn btn-primary">View All Transactions</a>
-        </div>
+
+        <a href="{% url 'finance_home' %}" class="btn btn-primary mt-3">Back to Home</a>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
