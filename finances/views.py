@@ -7,6 +7,7 @@ from .utils import get_total_amount,get_all_comparisons
 from django.shortcuts import get_object_or_404
 
 
+
 @login_required
 def home(request):
     current_user = request.user   #Get user from request 
@@ -57,3 +58,8 @@ def view_all_transactions(request):
     return render(request, 'transaction_list.html', {
         'transactions': table,
     })
+
+@login_required
+def visualisation_transactions(request):
+    pass
+
