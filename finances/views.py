@@ -5,6 +5,9 @@ from .forms import TransactionForm
 from .models import Transaction
 from .utils import get_total_amount,get_all_comparisons
 from django.shortcuts import get_object_or_404
+from django.shortcuts import render
+from django.http import JsonResponse
+import plotly.io as pio
 
 
 
@@ -58,8 +61,4 @@ def view_all_transactions(request):
     return render(request, 'transaction_list.html', {
         'transactions': table,
     })
-
-@login_required
-def visualisation_transactions(request):
-    pass
 
